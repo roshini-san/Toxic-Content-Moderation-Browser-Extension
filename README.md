@@ -9,6 +9,13 @@
 | Popup | Dashboard |
 |-------|-----------|
 | Extension popup with ON/OFF toggle and live stats | 6-tab analytics dashboard with word cloud, charts, timeline |
+<img width="380" height="369" alt="Screenshot 2026-02-25 204845" src="https://github.com/user-attachments/assets/71464387-c6a6-4a88-b074-5733d21d395c" />
+<img width="1846" height="1032" alt="Screenshot 2026-02-26 223846" src="https://github.com/user-attachments/assets/4722fe4b-15a8-4167-90d9-dda5cf9b8124" />
+<img width="1843" height="911" alt="Screenshot 2026-02-26 215508" src="https://github.com/user-attachments/assets/41569457-511e-4e22-82d3-c5493f093681" />
+<img width="1847" height="768" alt="Screenshot 2026-02-26 220452" src="https://github.com/user-attachments/assets/91bc6506-5c3e-4805-a6da-975152ab3c4c" />
+<img width="1772" height="867" alt="Screenshot 2026-02-26 222747" src="https://github.com/user-attachments/assets/0aba8932-9d57-480f-bffd-896c1fb4bfed" />
+<img width="1857" height="841" alt="Screenshot 2026-02-26 215427" src="https://github.com/user-attachments/assets/6b3b5629-545b-44f8-bd24-7e491498a741" />
+<img width="1840" height="864" alt="Screenshot 2026-02-26 225109" src="https://github.com/user-attachments/assets/65c60765-009c-401f-878c-41b21fe2d0e3" />
 
 ---
 
@@ -24,36 +31,9 @@
 - **Export** — Download your detection log as CSV or JSON
 
 ---
+> **Word list source:** [LDNOOBW — List of Dirty, Naughty, Obscene, and Otherwise Bad Words](https://github.com/ldnoobw/list-of-dirty-naughty-obscene-and-otherwise-bad-words)
 
-## Architecture
-
-```
-Web Page (any site)
-     │
-     ▼
-content.js  ──► Word-List Scan (2500+ words, regex, <5ms)
-     │                 │
-     │                 ▼
-     │           Blur + Log (chrome.storage)
-     │
-     ▼
-Flask Backend (localhost:5050)
-     │
-     ▼
-Detoxify RoBERTa ──► 6 toxicity scores
-     │
-     ▼
-Severity: HIGH / MEDIUM / LOW ──► Upgrade blur + Log
-                                          │
-                                          ▼
-                                  background.js (Service Worker)
-                                          │
-                                          ▼
-                                  chrome.storage.local
-                                          │
-                                          ▼
-                                  dashboard.html (Analytics)
-```
+---
 
 ### Two-Layer Detection
 
@@ -130,7 +110,7 @@ You should see:
 
 ---
 
-## 🤖 AI Backend — API Reference
+## AI Backend — API Reference
 
 The Flask backend runs on `http://127.0.0.1:5050` and exposes three endpoints:
 
@@ -195,76 +175,6 @@ Analyze up to 100 texts in one request.
     { "detoxify": {...}, "combined_severity": "none", "should_blur": false }
   ]
 }
-```
-
----
-
-## Severity Classification
-
-| Severity | Condition |
-|----------|-----------|
-| **HIGH** | `toxicity > 65%` OR `threat > 50%` OR `identity_attack > 50%` |
-| **MEDIUM** | `toxicity > 45%` |
-| **LOW** | `toxicity > 30%` |
-| **NONE** | Below all thresholds — no action taken |
-
----
-
-## 🗄️ Data Schema
-
-Every detection is stored in `chrome.storage.local` under the key `toxicLog` as an array of objects:
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `timestamp` | Number | Unix timestamp (`Date.now()`) |
-| `date` | String | ISO 8601 datetime string |
-| `source` | String | `word-list` / `ai-only` / `ai-upgrade` / `composer-guard` |
-| `text` | String | Detected text snippet (max 200 chars) |
-| `word` | String | Matched toxic word (word-list hits only) |
-| `severity` | String | `high` / `medium` / `low` |
-| `hateScore` | Number | Detoxify toxicity score (0.0–1.0) |
-| `detoxifyScores` | Object | All 6 category scores |
-| `domain` | String | Hostname where detection occurred |
-
-Maximum 2,000 entries are kept (oldest entries are auto-removed).
-
----
-
-## 📈 Analytics Dashboard
-
-Open the dashboard via:
-- Clicking **📊 View Full Dashboard** in the popup, or
-- Chrome Extensions → `chrome://extensions/` → Details → Extension options
-
-### Dashboard Tabs
-
-| Tab | Contents |
-|-----|----------|
-| 📊 Dashboard | Total detections, AI detections, high severity count, avg toxicity, word cloud, source bars, AI insights |
-| 📈 Charts | Detection histogram, severity breakdown pie chart, top domains bar chart |
-| 🤖 Models | Detoxify model info, 6-category score legend |
-| 🧪 Playground | Manual text analysis — type any text and see live Detoxify scores |
-| ⏱ Timeline | Chronological log with 6-category score tags per entry |
-| 📖 Word List | Full multilingual toxic word reference with search and severity filter |
-
-### Export
-
-- **CSV** — spreadsheet-compatible log of all detections
-- **JSON** — full raw log data
-
----
-
-## 🔧 Configuration
-
-Key constants in `content.js` you can adjust:
-
-```javascript
-const BACKEND           = 'http://127.0.0.1:5050'; // AI backend URL
-const AI_BATCH_SIZE     = 12;      // Max texts per AI batch request
-const AI_DEBOUNCE_MS    = 900;     // Wait before sending AI batch (ms)
-const MIN_AI_LEN        = 20;      // Minimum text length for AI analysis
-const COMPOSER_DELAY_MS = 1000;    // Keystroke delay before composer AI check
-const COMPOSER_MIN_LEN  = 20;      // Minimum input length to trigger composer guard
 ```
 
 ---
