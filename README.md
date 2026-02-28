@@ -1,10 +1,10 @@
-# 🛡️ Toxic Content Filter & Analytics Dashboard
+#  Toxic Content Filter & Analytics Dashboard
 
 > A Chrome Extension that automatically detects, blurs, and analyzes toxic content in real-time across any website — powered by a local AI backend (Detoxify / RoBERTa). No cloud. No data leaks. 100% private.
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 | Popup | Dashboard |
 |-------|-----------|
@@ -12,20 +12,20 @@
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🔍 **Real-time Detection** — Scans all web page text instantly using a compiled regex over 300+ toxic terms
-- 🤖 **AI Scoring** — Sends text to a local Detoxify (RoBERTa) backend for deep 6-category toxicity analysis
-- 🔴 **Auto Blur** — Wraps detected content in severity-colored blur overlays (click to reveal)
-- ✏️ **Composer Guard** — Warns you *as you type* in any textarea or comment box before you post
-- 📊 **Analytics Dashboard** — Full 6-tab dashboard with charts, word cloud, timeline, and export
-- 🌍 **Multilingual** — Word list covers 24 languages
-- 🔒 **100% Local** — The AI backend runs on your own machine; zero data sent to any cloud
-- 📤 **Export** — Download your detection log as CSV or JSON
+- **Real-time Detection** — Scans all web page text instantly using a compiled regex over 300+ toxic terms
+- **AI Scoring** — Sends text to a local Detoxify (RoBERTa) backend for deep 6-category toxicity analysis
+- **Auto Blur** — Wraps detected content in severity-colored blur overlays (click to reveal)
+- **Composer Guard** — Warns you *as you type* in any textarea or comment box before you post
+- **Analytics Dashboard** — Full 6-tab dashboard with charts, word cloud, timeline, and export
+- **Multilingual** — Word list covers 24 languages
+- **100% Local** — The AI backend runs on your own machine; zero data sent to any cloud
+- **Export** — Download your detection log as CSV or JSON
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Web Page (any site)
@@ -62,38 +62,9 @@ Severity: HIGH / MEDIUM / LOW ──► Upgrade blur + Log
 | Word-List | Regex + word boundaries | < 5ms | 382 terms, 24 languages |
 | AI (Detoxify) | RoBERTa inference (local) | ~50ms | 6 toxicity categories |
 
----
 
-## 📁 Project Structure
+## Installation & Setup
 
-```
-toxic-content-filter/
-├── manifest.json          # Chrome Extension config (Manifest V3)
-├── content.js             # Core content script — scanning, blurring, composer guard
-├── content.css            # Blur overlay styles
-├── background.js          # Service worker — log manager
-├── popup.html             # Extension popup UI
-├── popup.js               # Popup logic — toggle, stats
-├── dashboard.html         # Full analytics dashboard
-├── dashboard.js           # Dashboard logic — charts, word cloud, timeline, export
-├── server.py              # Python Flask AI backend (Detoxify)
-├── icon16.png             # Extension icons
-├── icon48.png
-├── icon128.png
-└── README.md
-```
-
----
-
-## 🚀 Installation & Setup
-
-### Prerequisites
-
-- **Google Chrome** 100+ (Manifest V3 compatible)
-- **Python 3.9+** (for AI backend)
-- **pip** package manager
-
----
 
 ### Step 1 — Clone the Repository
 
@@ -228,7 +199,7 @@ Analyze up to 100 texts in one request.
 
 ---
 
-## 📊 Severity Classification
+## Severity Classification
 
 | Severity | Condition |
 |----------|-----------|
