@@ -1,0 +1,57 @@
+/* Real-time input field blurring */
+.toxic-input-blurred {
+  filter: blur(5px) !important;
+  background-color: rgba(255, 0, 0, 0.1) !important;
+  border: 2px solid #ff4444 !important;
+  transition: filter 0.3s ease;
+}
+
+.toxic-contenteditable-blurred {
+  filter: blur(5px) !important;
+  background-color: rgba(255, 0, 0, 0.1) !important;
+  border: 2px solid #ff4444 !important;
+  transition: filter 0.3s ease;
+}
+
+.toxic-input-warning,
+.toxic-contenteditable-warning {
+  animation: warningPulse 1s infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Existing word blur styles */
+.toxic-word-blur {
+  display: inline-block;
+  filter: blur(5px);
+  cursor: default;
+  user-select: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0 2px;
+  border-radius: 3px;
+  position: relative;
+  pointer-events: none;
+}
+
+.toxic-word-blur.severity-low {
+  filter: blur(3px);
+  background-color: rgba(255, 255, 0, 0.15);
+}
+
+.toxic-word-blur.severity-medium {
+  filter: blur(5px);
+  background-color: rgba(255, 165, 0, 0.2);
+}
+
+.toxic-word-blur.severity-high {
+  filter: blur(8px);
+  background-color: rgba(255, 0, 0, 0.25);
+}
+
+.toxic-word-blur::after {
+  content: '';
+  display: none;
+}

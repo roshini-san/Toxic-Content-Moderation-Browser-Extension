@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toxic Filter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080810;
+      --surface: #0e0e1a;
+      --s2: #141422;
+      --border: rgba(255,255,255,0.06);
+      --border2: rgba(255,255,255,0.12);
+      --accent: #7b5cf6;
+      --pink: #e04a6f;
+      --green: #2dd4a0;
+      --amber: #f09c3c;
+      --text: #f0f0fa;
+      --muted2: #7a7a9a;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      width: 300px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+    }
+
+    .header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .shield {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--pink));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .header-text h2 {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #a78bfa, #e879a0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-text p {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted2);
+      margin-top: 1px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .toggle-info { font-size: 13px; font-weight: 600; }
+    .toggle-status {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--green);
+      margin-top: 2px;
+    }
+    .toggle-status.off { color: var(--pink); }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px; height: 22px;
+      background: var(--pink);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background .25s;
+      border: 1px solid var(--border2);
+    }
+    .toggle-switch.active { background: var(--green); }
+    .toggle-slider {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 16px; height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .25s;
+    }
+    .toggle-switch.active .toggle-slider { transform: translateX(22px); }
+
+    .stats { padding: 14px 20px; display: flex; gap: 10px; }
+
+    .stat-box {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      position: relative;
+    }
+
+    .stat-box::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 2px; height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .stat-box.today::before { background: var(--green); }
+
+    .stat-val {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted2);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-top: 5px;
+    }
+
+    .footer { padding: 0 20px 16px; }
+
+    .btn-dashboard {
+      width: 100%;
+      padding: 12px;
+      background: var(--s2);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+      transition: all .15s;
+    }
+    .btn-dashboard:hover { border-color: var(--accent); background: rgba(123,92,246,0.1); }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="shield">🛡️</div>
+    <div class="header-text">
+      <h2>Toxic Filter</h2>
+      <p>Toxic Content Detection · Live Analytics · Detoxify</p>
+    </div>
+  </div>
+
+  <div class="toggle-row">
+    <div>
+      <div class="toggle-info">Extension</div>
+      <div class="toggle-status" id="toggleStatus">ON</div>
+    </div>
+    <div class="toggle-switch active" id="toggleSwitch">
+      <div class="toggle-slider"></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-box">
+      <div class="stat-val" id="totalBlocked">0</div>
+      <div class="stat-lbl">Total</div>
+    </div>
+    <div class="stat-box today">
+      <div class="stat-val" id="todayBlocked">0</div>
+      <div class="stat-lbl">Today</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <button class="btn-dashboard" id="viewDashboard">
+      📊 View Full Dashboard
+    </button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
